@@ -1,5 +1,8 @@
 require_relative 'shopping'
+
 # Step 1 - The menu loop 🎁
+# Step 2 - List, Add, Delete 🎁🎁
+
 
 # Welcome the user
 puts 'Welcome to your Xmas gifts list'
@@ -8,19 +11,18 @@ puts '*******************************'
 
 gifts = %w[laptop camera puppy]
 options = %w[list add delete quit]
+
 user_choice = nil
 
 # LOOP (until quit)
 until user_choice == 4
-  # List options to user [list|add|delete|quit]
   puts '*******************************'
 
+  # List options to user [list|add|delete|quit]
   puts 'What do you want to do?'
-  options.each_with_index do |action, index|
-    puts "#{index + 1}. #{action.capitalize}"
-  end
-  print = '> '
-  user_choice = gets.chomp.to_i
+  list(options)
+
+  user_choice = ask_user_for_index
 
   # check if the user gave us a valid number
   until user_choice > 0 && user_choice <= options.size
@@ -30,33 +32,39 @@ until user_choice == 4
 
   # if list
   if user_choice == 1
-    list_gifts(gifts)
+    # Display nicely formatted gifts
+    puts 'Your gifts:'
+    list(gifts)
+
+  # if add
   elsif user_choice == 2
+    # Ask user what gift they want to add
     puts 'What do you want to add to the list?'
     print '> '
+    # save it in a variable
+    # gift == { name: 'puppy', bought: false }
     new_gift = gets.chomp
+    # and store in our gifts list
     gifts << new_gift
+  # if delete
+
+
   elsif user_choice == 3
+    # Ask user which gift they want to delete (number)
     puts 'Which item do you want to delete? (number)'
-    list_gifts(gifts)
-    print '> '
-    index_of_gift_to_be_deleted = gets.chomp.to_i - 1
+    puts 'Your gifts:'
+    list(gifts)
+    index_of_gift_to_be_deleted = ask_user_for_index - 1
+
+    # remove the gift from the list
     gifts.delete_at(index_of_gift_to_be_deleted)
-    p gifts
+
+  # if quit
   elsif user_choice == 4
-    # TODO
+    # break the loop
+    break
   end
 end
 
-puts 'Goodbye'
-    # Display nicely formatted gifts
-  # if add
-    # Ask user what gift they want to add
-    # save it in a variable
-    # and store in our gifts list
-  # if delete
-    # Ask user which gift they want to delete (number)
-    # remove the gift from the list
-  # if quit
-    # break the loop
 # say goodbye
+puts 'Goodbye'
